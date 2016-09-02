@@ -11,7 +11,7 @@
  function insert_into_db($country){
       $host = 'localhost';
       $user = 'root';
-      $password = 'tjdfkrdnjs~1';
+      $password = 'passwd';
       $dbname = 'chart';
       $port = '3306'; 
       $it_table;
@@ -94,7 +94,7 @@
         
         $host = 'localhost';
         $user = 'root';
-        $password = 'tjdfkrdnjs~1';
+        $password = 'passwd';
         $dbname = 'chart';
         $port = '3306';
         $table ='ps';
