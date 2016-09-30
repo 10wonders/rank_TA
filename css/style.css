@@ -1,0 +1,40 @@
+#header,
+#container,
+#footer{
+	position: relative;
+}
+
+.title,
+.menu,
+.content {
+	margin: 0 auto 10px;
+}
+
+.title,
+.menu{
+	width: 980px;
+}
+
+.content{
+	width: 960px;
+}
+
+#header {
+	z-index: 1000;
+}
+
+#container {
+	z-index: 100;
+}
+
+.input-group {
+	width: 450px;
+	margin-left: 200px;
+}
+
+.title {
+	padding: 60px 0px 30px 0px;
+}
+
+.input-group {
+}
