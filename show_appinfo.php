@@ -1,21 +1,26 @@
 <meta name = 'viewport' charset='utf-8'>
-<table>
-	<thead>
-		<th>No</td>
-		<th>Image</td>
-		<th>App Name</td>
-		<th>Google ID</td>
-		<<th></th>>Apple ID</td>
 
-	</thead>
 
 <?php
 
-		$host = '127.0.0.1';
-        $user = 'root';
-        $password = 'root';
-        $dbname = 'dbname';
+ 
 
+    function func(){
+
+        printf("
+            <table>
+                <thead>
+                    <td>No</td>
+                    <td>Image</td>
+                    <td>App Name</td>
+                    <td>Google ID</td>
+                    <td>Apple ID</td>
+                </thead>
+        ");
+    	$host = 'localhost';
+        $user = 'root';
+        $password = 'tjdfkrdnjs~1';
+        $dbname = 'app';
 
         $connect = mysqli_connect($host, $user, $password, $dbname);
         $GLOBALS['connect'];
@@ -31,9 +36,7 @@
         $row_num = mysqli_num_rows($result);
 
 
-
-        echo $row_num;
-        
+   
         for($i = 0; $i<$row_num; $i++){
         	$row = mysqli_fetch_object($result);
         	$name = $row->name;
@@ -46,6 +49,6 @@
             printf("<td>%s</td><td>%s</td></tr>",$ps_id, $it_id);
         }
 		mysqli_close($connect);
-    
+    }        
 ?>
 </table>

@@ -1,10 +1,10 @@
 
 <?php
     function insertPsFreeDB(){
-		$host = '127.0.0.1';
+    	$host = 'localhost';
         $user = 'root';
-        $password = 'root';
-        $dbname = 'dbname';
+        $password = 'tjdfkrdnjs~1';
+        $dbname = 'app';
 
         $connect = mysqli_connect($host, $user, $password, $dbname);
         $GLOBALS['connect'];
@@ -61,21 +61,18 @@
 			    	$name = preg_replace("/\'/","", $name); //작은따옴표 제거
 			    	// 앱 정보 저장
 			    	$result= mysqli_query($connect, "INSERT INTO app_info (ps_id, name, img, isFree) VALUES('$id', '$name', '$img', '$is_free')");
-					$select= mysqli_query($connect, "SELECT id FROM app_info WHERE ps_id='$id'");
-					$row  = mysqli_fetch_array($select);
-					$foreign_id = $row['id'];
-					// 앱 id로 검색해서, app_info 테이블에서 아이디 찾기.
+
 			    	if($i == 0){
 						//미국 플레이스토어 무료 앱 순위 DB 저장		    			
-		    			$res= mysqli_query($connect, "INSERT INTO us_rank (rank, id_ps_free, day) VALUES('$rank', '$foreign_id, '$date')");
+		    			$res= mysqli_query($connect, "INSERT INTO us (rank, id_ps_free, day) VALUES('$rank', '$id', '$date')");
 	    			}
 	    			else if($i == 1){
 						//한국 플레이스토어 무료 앱 정보, 순위 DB 저장
-	    				$res= mysqli_query($connect, "INSERT INTO ko_rank (rank, id_ps_free, day) VALUES('$rank', '$foreign_id', '$date')");
+	    				$res= mysqli_query($connect, "INSERT INTO ko (rank, id_ps_free, day) VALUES('$rank', '$id', '$date')");
 	    			}
 	    			else if($i == 2){
 						//한국 플레이스토어 무료 앱 정보, 순위 DB 저장
-	    				$res= mysqli_query($connect, "INSERT INTO jp_rank (rank, id_ps_free, day) VALUES('$rank', '$foreign_id', '$date')");
+	    				$res= mysqli_query($connect, "INSERT INTO jp (rank, id_ps_free, day) VALUES('$rank', '$id', '$date')");
 	    			}
 	    		}
 
@@ -90,10 +87,10 @@
       //insertItPaidDB();
 
     function insertItFreeDB(){
-		$host = '127.0.0.1';
+    	$host = 'localhost';
         $user = 'root';
-        $password = 'root';
-        $dbname = 'dbname';
+        $password = 'tjdfkrdnjs~1';
+        $dbname = 'app';
 
         $connect = mysqli_connect($host, $user, $password, $dbname);
         $GLOBALS['connect'];
@@ -165,7 +162,7 @@
 					$sql = "SELECT * FROM app_info WHERE name='$name'";
 		    		$result = mysqli_query($connect, $sql);
 		    		$num =mysqli_num_rows($result);
-					
+
 		    		if($num){ //똑같은 앱정보 이미 있음
 		    			$sql = "UPDATE app_info SET it_id='$id' WHERE name='$name'";
 		    			$res = mysqli_query($connect, $sql);
@@ -173,23 +170,19 @@
 		    		else{
 		    			$result= mysqli_query($connect, "INSERT INTO app_info (it_id, img, name, isFree) VALUES('$id', '$img', '$name', '$is_free');");
 		    		}
-				
-					$select = mysqli_query($connect, "SELECT id FROM app_info WHERE it_id='$id'");
-					$row  = mysqli_fetch_array($select);
-					$foreign_id = $row['id'];					// 앱 id로 검색해서, app_info 테이블에서 아이디 찾기.
 
 	    			if($i == 0){
 	    				//미국 아이튠즈 무료 앱 정보, 순위 DB 저장		    			
-		    			$res= mysqli_query($connect, "UPDATE us_rank SET id_it_free='$foreign_id' WHERE rank='$rank' and day='$date'");
+		    			$res= mysqli_query($connect, "UPDATE us SET id_it_free='$id' WHERE rank='$rank' and day='$date'");
 	    			}
 
-	    			elseif($i == 1){
+	    			else if($i == 1){
 	    				//한국 아이튠즈 무료 앱 정보, 순위 DB 저장	
-		    			$res= mysqli_query($connect, "UPDATE ko_rank SET id_it_free='$foreign_id' WHERE rank='$rank' and day='$date'");
+		    			$res= mysqli_query($connect, "UPDATE ko SET id_it_free='$id' WHERE rank='$rank' and day='$date'");
 	    			}
 	    			else if($i == 2){
 						//일본 아이튠즈 무료 앱 정보, 순위 DB 저장	
-	    				$res= mysqli_query($connect, "UPDATE jp_rank SET id_it_free='$foreign_id' WHERE rank='$rank' and day='$date'");
+	    				$res= mysqli_query($connect, "UPDATE jp SET id_it_free='$id' WHERE rank='$rank' and day='$date'");
 	    			}
 
 	    		}		    
@@ -201,11 +194,11 @@
       }
 
   function insertPsPaidDB(){
-   		$host = '127.0.0.1';
+    	$host = 'localhost';
         $user = 'root';
-        $password = 'root';
-        $dbname = 'dbname';
-	  
+        $password = 'tjdfkrdnjs~1';
+        $dbname = 'app';
+
         $connect = mysqli_connect($host, $user, $password, $dbname);
         $GLOBALS['connect'];
 
@@ -261,22 +254,18 @@
 			    	$name = preg_replace("/\'/","", $name); //작은따옴표 제거
 			    	// 앱 정보 저장
 			    	$result= mysqli_query($connect, "INSERT INTO app_info (ps_id, name, img, isFree) VALUES('$id', '$name', '$img', '$is_free')");
-					$select = mysqli_query($connect, "SELECT id FROM app_info WHERE ps_id='$id'");
-					$row  = mysqli_fetch_array($select);
-					$foreign_id = $row['id'];					// 앱 id로 검색해서, app_info 테이블에서 아이디 찾기.
-					// 앱 id로 검색해서, app_info 테이블에서 아이디 찾기.
 
 			    	if($i == 0){
 						//미국 플레이스토어 유료 앱 순위 DB 저장		    			
-		    			$res= mysqli_query($connect, "UPDATE us_rank SET id_ps_paid='$foreign_id' WHERE rank='$rank' and day='$date'");
+		    			$res= mysqli_query($connect, "UPDATE us SET id_ps_paid='$id' WHERE rank='$rank' and day='$date'");
 	    			}
 	    			else if($i == 1){
 						//한국 플레이스토어 유료 앱 정보, 순위 DB 저장
-	    				$res= mysqli_query($connect, "UPDATE ko_rank SET id_ps_paid='$foreign_id' WHERE rank='$rank' and day='$date'");
+	    				$res= mysqli_query($connect, "UPDATE ko SET id_ps_paid='$id' WHERE rank='$rank' and day='$date'");
 	    			}
 	    			else if($i == 2){
 						//한국 플레이스토어 유료 앱 정보, 순위 DB 저장
-	    				$res= mysqli_query($connect, "UPDATE jp_rank SET id_ps_paid='$foreign_id' WHERE rank='$rank' and day='$date'");
+	    				$res= mysqli_query($connect, "UPDATE jp SET id_ps_paid='$id' WHERE rank='$rank' and day='$date'");
 	    			}
 	    		}
 
@@ -289,11 +278,11 @@
     	//insertPsFreeDB();
       
     function insertItPaidDB(){
- 		$host = '127.0.0.1';
+    	$host = 'localhost';
         $user = 'root';
-        $password = 'root';
-        $dbname = 'dbname';
-		
+        $password = 'tjdfkrdnjs~1';
+        $dbname = 'app';
+
         $connect = mysqli_connect($host, $user, $password, $dbname);
         $GLOBALS['connect'];
 
@@ -372,25 +361,19 @@
 		    		else{
 		    			$result= mysqli_query($connect, "INSERT INTO app_info (it_id, img, name, isFree) VALUES('$id', '$img', '$name', '$is_free');");
 		    		}
-					
-					$select = mysqli_query($connect, "SELECT id FROM app_info WHERE it_id='$id'");
-					$row  = mysqli_fetch_array($select);
-					$foreign_id = $row['id'];
-					// 앱 id로 검색해서, app_info 테이블에서 아이디 찾기.
-
 
 	    			if($i == 0){
 	    				//미국 아이튠즈 유료 앱 정보, 순위 DB 저장		    			
-		    			$res= mysqli_query($connect, "UPDATE us_rank SET id_it_paid='$foreign_id' WHERE rank='$rank' and day='$date'");
+		    			$res= mysqli_query($connect, "UPDATE us SET id_it_paid='$id' WHERE rank='$rank' and day='$date'");
 	    			}
 
 	    			elseif($i == 1){
 	    				//한국 아이튠즈 유료 앱 정보, 순위 DB 저장	
-		    			$res= mysqli_query($connect, "UPDATE ko_rank SET id_it_paid='$foreign_id' WHERE rank='$rank' and day='$date'");
+		    			$res= mysqli_query($connect, "UPDATE ko SET id_it_paid='$id' WHERE rank='$rank' and day='$date'");
 	    			}
 	    			elseif($i == 2){
 	    				//일본 아이튠즈 유료 앱 정보, 순위 DB 저장	
-		    			$res= mysqli_query($connect, "UPDATE jp_rank SET id_it_paid='$foreign_id' WHERE rank='$rank' and day='$date'");
+		    			$res= mysqli_query($connect, "UPDATE jp SET id_it_paid='$id' WHERE rank='$rank' and day='$date'");
 	    			}
 
 	    		}		    
