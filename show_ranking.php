@@ -11,7 +11,6 @@
 <?php
 
 		include ('db_con.php');
-
         $table = 'us';
         $date = date('Y-m-d');
         //$date = strtotime($date);

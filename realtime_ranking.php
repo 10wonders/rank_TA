@@ -1,9 +1,9 @@
 <?php include ('crawling.php');?>
 
 <?php
- function chkResource($country, $provider){
+ function chkResource($country, $provider){// 이 함수 혹시 필요 없는 함수라면 지워주세요.
 
-    if($country=="us"){
+/*    if($country=="us"){
       if($provider == "google"){    
         $ps_url_free = "https://play.google.com/store/apps/collection/topselling_free?start=0&num=100&gl=us";
         $ps_url_paid = "https://play.google.com/store/apps/collection/topselling_paid?start=0&num=100&gl=us";     
@@ -24,11 +24,12 @@
        
       }
     }
-    if($provider == "google") loadRanking($ps_url_paid, $ps_url_free, $country, $provider );
-    else loadRanking($it_url_paid, $it_url_free, $country, $provider);
+    if($provider == "google") loadRanking($ps_url_paid, $ps_url_free,	$country, $provider );
+    else loadRanking($it_url_paid, $it_url_free, $country, $provider);*/
  }
 
- function loadRanking($it_url, $ps_url, $country, $provider){
+ function loadRanking(//$it_url, $ps_url,
+	 $country, $provider){
 
 
 	 include ('db_con.php');
@@ -150,7 +151,7 @@
                   <div class=\"app_href\">
                     <a href=\"https://play.google.com/store/apps/details?id=%s\">
                     <img onmouseover=\"app_img_on('%s', 1)\" onmouseout=\"app_img_off('%s', 1)\" id=\"%s\" class=\"app_download\" src=\"off-google-play.png\" width=\"20\" height=\"20\"></a>
-                    <a href = \"show_chart.php?country=$country$sec=free&id=$free\" target='_blank'>
+                    <a href = \"show_chart.php?country=$country&sec=free&id=$free\" target='_blank'>
                     <img onmouseover=\"app_img_on('%s', 0)\" onmouseout=\"app_img_off('%s', 0)\" id=\"%s\" class=\"app_download\" src=\"off-chart.png\" width=\"20\" height=\"20\"></a>
                     <span class = '$changerank1'>
                         <img class = '$changerank1' src='%s.png'>%s
@@ -180,8 +181,8 @@
       $j = $_REQUEST['chk_info'];
 
       if($i==NULL){
-        $i = "kr";
+        $i = "ko";
         $j = "google";
       }
-     chkResource($i, $j);
+     loadRanking($i, $j);
 ?>
