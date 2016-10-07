@@ -5,7 +5,7 @@
 
  
 
-    function func(){
+    function show_appinfo(){
 
         printf("
             <table>
@@ -17,19 +17,8 @@
                     <td>Apple ID</td>
                 </thead>
         ");
-    	$host = 'localhost';
-        $user = 'root';
-        $password = 'tjdfkrdnjs~1';
-        $dbname = 'app';
 
-        $connect = mysqli_connect($host, $user, $password, $dbname);
-        $GLOBALS['connect'];
-
-   		if(!$connect){
-            die('Connect Error: '.mysqli_connect_error());
-        	return ;
-        }
-
+		include ('db_con.php');
         $table = 'app_info';
         $result = mysqli_query($connect, "SELECT * FROM $table");
         

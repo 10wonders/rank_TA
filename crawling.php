@@ -114,8 +114,8 @@
   
   .country_flag{ 
     margin-left: 6px;
-    padding-top: 15px;
-    width: 70px; float: left; 
+    padding: 10px 0px 5px 0px;
+    width: 60px; float: left;
     border-top: 1px solid #666666;
     border-left: 1px solid #666666;
     border-right: 1px solid #666666;
@@ -125,7 +125,7 @@
       outline: 2px solid #258DC8;
   }
   .flags{text-align: center;}
-  .flag_img{ width : 20px; height : 20px;}
+  .flag_img{ width : 32px; height : 32px;}
   .country_name{
     text-align: center;
     color: #000000;
@@ -213,7 +213,7 @@ window.onload = function(){
           <a href="#" onclick="func('ko')" >
             <div class="country_flag">
               <div class="flags">
-                <img src="flags/south_korea.png" class="flag_img">
+                <img src="flags/south-korea.png" class="flag_img">
               </div>
               <div class="country_name">
                 KOREA
@@ -356,7 +356,7 @@ window.onload = function(){
           <a href="#">
             <div class="country_flag">
               <div class="flags">
-                <img src="flags/hong_kong.png" class="flag_img">
+                <img src="flags/hong-kong.png" class="flag_img">
               </div>
               <div class="country_name">
                 HONGKONG
@@ -406,7 +406,7 @@ window.onload = function(){
           <a href="#">
             <div class="country_flag">
               <div class="flags">
-                <img src="flags/new_zealand.png" class="flag_img">
+                <img src="flags/new-zealand.png" class="flag_img">
               </div>
               <div class="country_name">
                NEWZEALAND
@@ -416,7 +416,7 @@ window.onload = function(){
           <a href="#">
             <div class="country_flag">
               <div class="flags">
-                <img src="flags/united_kingdom.png" class="flag_img">
+                <img src="flags/united-kingdom.png" class="flag_img">
               </div>
               <div class="country_name">
                 UK

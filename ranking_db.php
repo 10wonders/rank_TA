@@ -1,18 +1,7 @@
 
 <?php
     function insertPsFreeDB(){
-    	$host = 'localhost';
-        $user = 'root';
-        $password = 'tjdfkrdnjs~1';
-        $dbname = 'app';
-
-        $connect = mysqli_connect($host, $user, $password, $dbname);
-        $GLOBALS['connect'];
-
-   		if(!$connect){
-            die('Connect Error: '.mysqli_connect_error());
-        	return ;
-        }
+		include ('db_con.php');
     	echo "--플레이스토어 무료 앱 순위 업데이트-- <br />";
 
 
@@ -87,18 +76,7 @@
       //insertItPaidDB();
 
     function insertItFreeDB(){
-    	$host = 'localhost';
-        $user = 'root';
-        $password = 'tjdfkrdnjs~1';
-        $dbname = 'app';
-
-        $connect = mysqli_connect($host, $user, $password, $dbname);
-        $GLOBALS['connect'];
-
-   		if(!$connect){
-            die('Connect Error: '.mysqli_connect_error());
-        	return ;
-        }
+		include ('db_con.php');
      
         echo "--ITUNES 무료 앱 순위 업데이트 완료-- <br />";
 
@@ -194,18 +172,8 @@
       }
 
   function insertPsPaidDB(){
-    	$host = 'localhost';
-        $user = 'root';
-        $password = 'tjdfkrdnjs~1';
-        $dbname = 'app';
 
-        $connect = mysqli_connect($host, $user, $password, $dbname);
-        $GLOBALS['connect'];
-
-   		if(!$connect){
-            die('Connect Error: '.mysqli_connect_error());
-        	return ;
-        }
+	  include ('db_con.php');
     	echo "--플레이스토어 유료 앱 순위 업데이트 완료-- <br />";
 
 
@@ -278,19 +246,7 @@
     	//insertPsFreeDB();
       
     function insertItPaidDB(){
-    	$host = 'localhost';
-        $user = 'root';
-        $password = 'tjdfkrdnjs~1';
-        $dbname = 'app';
-
-        $connect = mysqli_connect($host, $user, $password, $dbname);
-        $GLOBALS['connect'];
-
-   		if(!$connect){
-            die('Connect Error: '.mysqli_connect_error());
-        	return ;
-        }
-     
+		include ('db_con.php');
         echo "--ITUNES 유료 앱 순위 업데이트 완료-- <br />";
 
 

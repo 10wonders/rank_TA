@@ -30,20 +30,10 @@
 
  function loadRanking($it_url, $ps_url, $country, $provider){
 
-        $host = 'localhost';
-        $user = 'root';
-        $password = 'root';
-        $dbname = 'app';
 
-        $connect = mysqli_connect($host, $user, $password, $dbname);
-        $GLOBALS['connect'];
+	 include ('db_con.php');
 
-        if(!$connect){
-            die('Connect Error: '.mysqli_connect_error());
-          return ;
-        }
-
-        //google 
+	 //google
         if($provider == "google"){
           $id_free = 'id_ps_free';
           $id_paid = 'id_ps_paid';

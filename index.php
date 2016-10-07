@@ -44,7 +44,7 @@
 
 	<div id="container">
 		<div class="content">
-			<?php include 'show_appinfo.php'?>
+			<?php include 'realtime_ranking.php';?>
 		</div>
 	</div>
 
