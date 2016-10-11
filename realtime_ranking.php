@@ -151,7 +151,7 @@
                   <div class=\"app_href\">
                     <a href=\"https://play.google.com/store/apps/details?id=%s\">
                     <img onmouseover=\"app_img_on('%s', 1)\" onmouseout=\"app_img_off('%s', 1)\" id=\"%s\" class=\"app_download\" src=\"off-google-play.png\" width=\"20\" height=\"20\"></a>
-                    <a href = \"show_chart.php?country=$country&sec=free&id=$free\" target='_blank'>
+                    <a href = \"show_chart.php?country=$country&sec=free&id=$free&from=$provider\" target='_blank'>
                     <img onmouseover=\"app_img_on('%s', 0)\" onmouseout=\"app_img_off('%s', 0)\" id=\"%s\" class=\"app_download\" src=\"off-chart.png\" width=\"20\" height=\"20\"></a>
                     <span class = '$changerank1'>
                         <img class = '$changerank1' src='%s.png'>%s
@@ -166,7 +166,7 @@
                   <div class=\"app_href\">
                      <a href=\"https://play.google.com/store/apps/details?id=%s\">
                         <img onmouseover=\"app_img_on('%s', 1)\" onmouseout=\"app_img_off('%s', 1)\" id=\"%s\" class=\"app_download\" src=\"off-google-play.png\" width=\"20\" height=\"20\"></a>
-                     <a href = \"show_chart.php?country=$country&sec=paid&id=$paid\" target='_blank'>
+                     <a href = \"show_chart.php?country=$country&sec=paid&id=$paid&from=$provider\" target='_blank'>
                         <img onmouseover=\"app_img_on('%s', 0)\" onmouseout=\"app_img_off('%s', 0)\" id=\"%s\" class=\"app_download\" src=\"off-chart.png\" width=\"20\" height=\"20\">
                      </a>
                      <span class = '$changerank2'>
