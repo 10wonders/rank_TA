@@ -1,58 +1,70 @@
 <?php include ('crawling.php');?>
 
 <?php
- function chkResource($country, $provider){// 이 함수 혹시 필요 없는 함수라면 지워주세요.
 
-/*    if($country=="us"){
-      if($provider == "google"){    
-        $ps_url_free = "https://play.google.com/store/apps/collection/topselling_free?start=0&num=100&gl=us";
-        $ps_url_paid = "https://play.google.com/store/apps/collection/topselling_paid?start=0&num=100&gl=us";     
-      }
-      else{
-        $it_url_free = "http://www.apple.com/itunes/charts/free-apps/";
-        $it_url_paid = "http://www.apple.com/itunes/charts/paid-apps/";
-      }
-    }
-    else{
-      if($provider == "google"){
-        $ps_url_free = "https://play.google.com/store/apps/collection/topselling_free?start=0&num=100&gl=".$country;
-        $ps_url_paid = "https://play.google.com/store/apps/collection/topselling_paid?start=0&num=100&gl=".$country;
-      }
-      else{
-        $it_url_free = "http://www.apple.com/".$country."/itunes/charts/free-apps/";
-        $it_url_paid = "http://www.apple.com/".$country."/itunes/charts/paid-apps/";
-       
-      }
-    }
-    if($provider == "google") loadRanking($ps_url_paid, $ps_url_free,	$country, $provider );
-    else loadRanking($it_url_paid, $it_url_free, $country, $provider);*/
- }
-
- function loadRanking(//$it_url, $ps_url,
-	 $country, $provider){
-
-
+ function loadRanking($country, $provider){
 	 include ('db_con.php');
 
 	 //google
-        if($provider == "google"){
-          $id_free = 'id_ps_free';
-          $id_paid = 'id_ps_paid';
-          $id_feild = 'ps_id';
-        }
-        //itunes
-        else{
-          $id_free = 'id_it_free';
-          $id_paid = 'id_it_paid';
-          $id_feild = 'it_id';
+    if($provider == "google"){
+      $id_free = 'id_ps_free';
+      $id_paid = 'id_ps_paid';
+      $id_feild = 'ps_id';
+      $genre_field = "ps_genre";
+    }
+    //itunes
+    else{
+      $id_free = 'id_it_free';
+      $id_paid = 'id_it_paid';
+      $id_feild = 'it_id';
+      $genre_field = "it_genre";
+    }
 
-        }
+    
+        
     echo $country.' / '.$provider.'<br />';
+    printf("<div id='genre'>
+            <form id='gen_form' method='post' action='realtime_ranking.php'>
+            <input type='hidden' name='Country' value='%s'>
+            <input type='hidden' name='provider' value='%s'>
+            <select id='genre' name=\"genre\" onchange=\"this.form.submit();\">
+            <option value=\"all\">All</option>", $country, $provider);
 
-        $date = date('Y-m-d');
-        $beforeDay = date("Y-m-d", strtotime($day." -1 day"));
+    $gen_res = mysqli_query($connect,"SELECT DISTINCT $genre_field From app_info");
 
-        $result = mysqli_query($connect, "SELECT rank, $id_free, $id_paid FROM $country WHERE day='$date'");
+    for($i = 0; $row = mysqli_fetch_object($gen_res); $i++){
+      $genre_list = $row->$genre_field;
+      if($genre_list!=NULL){
+        printf("<option value=\"%s\">%s</option>", $genre_list, $genre_list);
+      }
+    }
+
+    printf("</select>
+            </form>
+            </div>");
+         $date = date('Y-m-d');
+        $beforeDay = date("Y-m-d", strtotime($day." -1 day"));   
+
+        $genre = $_POST['genre'];    
+        if($genre==NULL or $genre=="all"){
+          $genre="all";
+          $result = mysqli_query($connect, "SELECT rank, $id_free, $id_paid FROM $country WHERE day='$date'");
+          $num = mysqli_num_rows($result);
+        }
+        else{
+          $result1 = mysqli_query($connect, "SELECT rank, $id_free FROM $country 
+            RIGHT OUTER JOIN app_info on $country.$id_free = app_info.$id_feild WHERE day='$date' and $genre_field='$genre'");
+          $num1 = mysqli_num_rows($result1);
+          $result2 = mysqli_query($connect, "SELECT rank, $id_paid FROM $country 
+            RIGHT OUTER JOIN app_info on $country.$id_paid = app_info.$id_feild WHERE day='$date' and $genre_field='$genre'");
+          $num2 = mysqli_num_rows($result2);
+          if($num1<$num2){
+            $num=$num2;
+          }
+          else{
+            $num=$num1;
+          }
+        }
 
         printf("
             <table border=\"0\">
@@ -64,19 +76,35 @@
                     <td class=\"thead-line\">App Paid</td>
                 </thead>
         ");
-
-        for($i = 0; $row = mysqli_fetch_object($result); $i++){
+        
+        for($i = 0; $i<$num; $i++){
           
+            echo $genre;
             
             if($provider == "google"){
-              $free = $row->id_ps_free;
-              $paid = $row->id_ps_paid;              
+              if($genre=="all"){
+                $row = mysqli_fetch_object($result);
+                $free = $row->id_ps_free;
+                $paid = $row->id_ps_paid;
+                $ranking1 = $row->rank;
+                $ranking2 = $row->rank;
+              }
+              else{
+                $row1 = mysqli_fetch_object($result1);
+                $row2 = mysqli_fetch_object($result2);
+                $free = $row1->id_ps_free;
+                $paid = $row2->id_ps_paid;
+                $ranking1 = $row1->rank;
+                $ranking2 = $row2->rank;
+              }
+   
               $selected1 = mysqli_query($connect, "SELECT name, img FROM app_info WHERE $id_feild='$free';");
               $selected2 = mysqli_query($connect, "SELECT name, img FROM app_info WHERE $id_feild='$paid';");
               $selbefore1 = mysqli_query($connect, "SELECT rank FROM $country WHERE id_ps_free = '$free' and day = '$beforeDay'");
               $selbefore2 = mysqli_query($connect, "SELECT rank FROM $country WHERE id_ps_paid = '$paid' and day = '$beforeDay'");
             }
             else{
+              $row = mysqli_fetch_object($result);
               $free = $row->id_it_free;
               $paid = $row->id_it_paid;
               $selected1 = mysqli_query($connect, "SELECT name, img FROM app_info WHERE $id_feild=$free");
@@ -88,7 +116,7 @@
             $sel_obj1 = mysqli_fetch_object($selected1);
             $sel_obj2 = mysqli_fetch_object($selected2);
 
-            $ranking = $row->rank;
+
             $sel_obj_name1 = $sel_obj1->name;
             $sel_obj_img1 = $sel_obj1->img;            
             $sel_obj_name2 = $sel_obj2->name;
@@ -109,17 +137,17 @@
                 $changerank1 ="new";
                 $changeval1=null;
             }
-            elseif($ranking>$before_rank1){
-                $down = $before_rank1-$ranking;
+            elseif($ranking1>$before_rank1){
+                $down = $before_rank1-$ranking1;
                 $changerank1 = "down";
                 $changeval1 = $down;
             }
-            elseif($ranking<$before_rank1){
-                $up = $before_rank1-$ranking;
+            elseif($ranking1<$before_rank1){
+                $up = $before_rank1-$ranking1;
                 $changerank1 = "up";
                 $changeval1 = $up;
             }
-            elseif($ranking==$before_rank1){
+            elseif($ranking1==$before_rank1){
                 $changerank1 = "same";
                 $changeval1 = null;
             }
@@ -128,22 +156,22 @@
                 $changerank2 ="new";
                 $changeval2=null;
             }
-            elseif($ranking>$before_rank2){
-                $down = $before_rank2-$ranking;
+            elseif($ranking2>$before_rank2){
+                $down = $before_rank2-$ranking2;
                 $changerank2 = "down";
                 $changeval2 = $down;
             }
-            elseif($ranking<$before_rank2){
-                $up = $before_rank2-$ranking;
+            elseif($ranking2<$before_rank2){
+                $up = $before_rank2-$ranking2;
                 $changerank2 = "up";
                 $changeval2 = $up;
             }
-            elseif($ranking==$before_rank2){
+            elseif($ranking2==$before_rank2){
                 $changerank2 = "same";
                 $changeval2 = null;
             }
-            //$changeimg2 = $changerank2.".png";
-            printf("<tr><td>%s</td>", $ranking);
+    
+            printf("<tr><td>%s</td>", $i+1);
             printf("<td><img src=\"%s\" width=\"50\"></td>
               <td>
                 <div class=\"cls_app_name\">
@@ -177,12 +205,12 @@
               </td>", $sel_obj_img2, $sel_obj_name2, $paid, $download_paid,$download_paid,$download_paid, $chart_paid, $chart_paid, $chart_paid, $changerank2, $changeval2);           
         }
   }
-      $i = $_REQUEST['Country'];  
-      $j = $_REQUEST['chk_info'];
+$i = $_POST['Country'];  
+$j = $_POST['provider'];
 
-      if($i==NULL){
-        $i = "ko";
-        $j = "google";
-      }
-     loadRanking($i, $j);
+if($i==NULL){
+  $i = "ko";
+  $j = "google";
+}
+loadRanking($i, $j);
 ?>

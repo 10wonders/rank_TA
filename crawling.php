@@ -176,8 +176,8 @@ window.onload = function(){
       <div>현재시각 : <span id="clock"></span>
       <div class="btn-group" role="group" aria-label="...">
         <form id="myform" method='post' action='realtime_ranking.php'>
-        <label for='r1'><input type="radio" id="r1" name="chk_info" value="google" checked>GOOGLE</label>
-        <label for='r2'><input type="radio" id="r2" name="chk_info" value="apple">APPLE</label><br><br> 
+        <label for='r1'><input type="radio" id="r1" name="provider" value="google" checked>GOOGLE</label>
+        <label for='r2'><input type="radio" id="r2" name="provider" value="apple">APPLE</label><br><br> 
         
         <input type="radio"  id="ko"  name="Country" value="ko" hidden="">
         <input type="radio"  id="us"  name="Country" value="us" hidden="">
