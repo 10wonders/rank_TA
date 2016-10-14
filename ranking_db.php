@@ -35,7 +35,7 @@ ini_set('max_execution_time', 0);
 	    	$name = $ps_match[1][$j];
 	    	$name = preg_replace("/\'/","", $name); //작은따옴표 제거
 	    	
-	    	  $ps_link = "https://play.google.com/store/apps/details?id=".$id."&hl=en";
+	    	  $ps_link = "https://play.google.com/store/apps/details?id=".$id."&hl=en&gl=".$contury."";
 	    	  $ps_ch_link = curl_init($ps_link);
 	          curl_setopt($ps_ch_link, CURLOPT_RETURNTRANSFER, 1);
 	          curl_setopt($ps_ch_link, CURLOPT_RANGE, '0-100');
@@ -51,6 +51,7 @@ ini_set('max_execution_time', 0);
 	    	$sql = "SELECT * FROM app_info WHERE name='$name'";
     		$result = mysqli_query($connect, $sql);
     		$num =mysqli_num_rows($result);
+			$ps_genre = preg_replace("/&amp;/","&", $ps_genre);
 
     		if($num){ //똑같은 앱정보 이미 있음
     			$sql = "UPDATE app_info SET ps_id='$id', ps_genre='$ps_genre' WHERE name='$name'";
@@ -87,7 +88,7 @@ ini_set('max_execution_time', 0);
     	  //itunes Crawling Code
         $it_ch = curl_init();
         curl_setopt($it_ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36");
-        curl_setopt($it_ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($it_ch, CURLOPT_TIMEOUT, 60);
         curl_setopt($it_ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($it_ch, CURLOPT_URL, $it_url);
         //curl_setopt($it_ch, CURLOPT_RETURNTRANSFER, 1);
@@ -108,7 +109,7 @@ ini_set('max_execution_time', 0);
 	    //이름 추출 
 		preg_match_all("/<h3>+<a.*?>(.*?)<\/a>/",$it_content, $it_match);
 		//장르 추출
-		/**preg_match_all("/<h4>+<a.*?>(.*?)<\/a>/",$it_content, $it_genre_match);**/
+		preg_match_all("/<h4>+<a.*?>(.*?)<\/a>/",$it_content, $it_genre_match);
 
 		$date = date('Y-m-d');
 		$date = date("Y-m-d",strtotime(str_replace('/','-',$date))); //today
@@ -122,8 +123,9 @@ ini_set('max_execution_time', 0);
 	    	$img = $it_img_match[1][$j];
 	    	$name = $it_match[1][$j];
 	    	$name = preg_replace("/\'/","", $name); //작은따옴표 제거
-	    	//$genre = $it_genre_match[1][$j];
-
+	    	$genre = $it_genre_match[1][$j];
+			$genre = preg_replace("/&#38;/","&", $genre);
+/*
 	    	  $it_link = explode("APPS",$itunes_link);
 	          $it_link = $it_link[0]."APPS&l=en&ign-mpt=uo%3D4";
 
@@ -144,18 +146,18 @@ ini_set('max_execution_time', 0);
 	          curl_close($it_link_ch);
 	          preg_match('/<span itemprop="applicationCategory".*?>(.*?)<\/span>/', $it_link_content, $it_genre_match);// 장르
 	          $it_genre_match = $it_genre[1];
-
+*/
 
 			$sql = "SELECT * FROM app_info WHERE name='$name'";
     		$result = mysqli_query($connect, $sql);
     		$num =mysqli_num_rows($result);
 
     		if($num){ //똑같은 앱정보 이미 있음
-    			$sql = "UPDATE app_info SET it_id='$id', it_genre='$it_genre' WHERE name='$name'";
+    			$sql = "UPDATE app_info SET it_id='$id', it_genre='$genre' WHERE name='$name'";
     			$res = mysqli_query($connect, $sql);
     		}
     		else{
-    			$result= mysqli_query($connect, "INSERT INTO app_info (it_id, img, name, isFree, it_genre) VALUES('$id', '$img', '$name', '$is_free', '$it_genre');");
+    			$result= mysqli_query($connect, "INSERT INTO app_info (it_id, img, name, isFree, it_genre) VALUES('$id', '$img', '$name', '$is_free', '$it_genre_match');");
     		}
     		$id_it = "id_it_".$free_paid;
 			//아이튠즈 무료 앱 정보, 순위 DB 저장		    			
@@ -192,9 +194,10 @@ ini_set('max_execution_time', 0);
 		    	case 2:
 		    		$country = 'jp';
 		    		break;
-
 		    }
+
 		    ps_DB($free_paid, $country, $is_free);
+			//it_DB($free_paid, $country, $is_free);
 		}
 	}
 
