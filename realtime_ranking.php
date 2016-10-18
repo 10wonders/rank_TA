@@ -28,7 +28,8 @@
             <input type='hidden' name='Country' value='%s'>
             <input type='hidden' name='provider' value='%s'>
             <select id='genre' name=\"genre\" onchange=\"this.form.submit();\">
-            <option value=\"all\">All</option>", $country, $provider);
+            <option value='NULL'>Category</option>
+            <option value=\"All\">All</option>", $country, $provider);
 
     $gen_res = mysqli_query($connect,"SELECT DISTINCT $genre_field From app_info");
 
@@ -44,10 +45,20 @@
             </div>");
          $date = date('Y-m-d');
         $beforeDay = date("Y-m-d", strtotime($day." -1 day"));   
+         
 
-        $genre = $_POST['genre'];    
-        if($genre==NULL or $genre=="all"){
-          $genre="all";
+        // including the session file
+        require_once("session_start.php");
+
+
+        if (isset($_POST['genre'])) { 
+          $_SESSION['genre'] = $_POST['genre'];
+        } 
+
+        $genre = $_SESSION['genre'];
+
+        if($genre==NULL or $genre=="All"){
+          $genre="All";
           $result = mysqli_query($connect, "SELECT rank, $id_free, $id_paid FROM $country WHERE day='$date'");
           $num = mysqli_num_rows($result);
         }
@@ -76,13 +87,10 @@
                     <td class=\"thead-line\">App Paid</td>
                 </thead>
         ");
-        
+        echo $genre;
         for($i = 0; $i<$num; $i++){
-          
-            echo $genre;
-            
             if($provider == "google"){
-              if($genre=="all"){
+              if($genre=="All"){
                 $row = mysqli_fetch_object($result);
                 $free = $row->id_ps_free;
                 $paid = $row->id_ps_paid;
@@ -104,9 +112,22 @@
               $selbefore2 = mysqli_query($connect, "SELECT rank FROM $country WHERE id_ps_paid = '$paid' and day = '$beforeDay'");
             }
             else{
-              $row = mysqli_fetch_object($result);
-              $free = $row->id_it_free;
-              $paid = $row->id_it_paid;
+              if($genre=="All"){
+                $row = mysqli_fetch_object($result);
+                $free = $row->id_it_free;
+                $paid = $row->id_it_paid;
+                $ranking1 = $row->rank;
+                $ranking2 = $row->rank;
+              }
+              else{
+                $row1 = mysqli_fetch_object($result1);
+                $row2 = mysqli_fetch_object($result2);
+                $free = $row1->id_it_free;
+                $paid = $row2->id_it_paid;
+                $ranking1 = $row1->rank;
+                $ranking2 = $row2->rank;
+              }
+
               $selected1 = mysqli_query($connect, "SELECT name, img FROM app_info WHERE $id_feild=$free");
               $selected2 = mysqli_query($connect, "SELECT name, img FROM app_info WHERE $id_feild=$paid");
               $selbefore1 = mysqli_query($connect, "SELECT rank FROM $country WHERE id_it_free = '$free' and day = '$beforeDay'");
@@ -205,12 +226,16 @@
               </td>", $sel_obj_img2, $sel_obj_name2, $paid, $download_paid,$download_paid,$download_paid, $chart_paid, $chart_paid, $chart_paid, $changerank2, $changeval2);           
         }
   }
-$i = $_POST['Country'];  
-$j = $_POST['provider'];
+$i = $_POST['Country']; 
 
+$j = $_POST['provider'];
+//$k = $_POST['genre'];
 if($i==NULL){
   $i = "ko";
   $j = "google";
 }
+//if(!$k){
+//  $_SESSION['genre']='all';
+//}
 loadRanking($i, $j);
 ?>
