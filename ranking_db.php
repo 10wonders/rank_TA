@@ -27,14 +27,14 @@ ini_set('max_execution_time', 0);
 	    $date = date('Y-m-d');
 		$date = date("Y-m-d",strtotime(str_replace('/','-',$date))); // today
 
-		   
+		//개선 필요할 것 같습니다. 너무 느려서 뻗을 수 있을듯..
 	    for($j = 0; $j < $cnt; ++$j){
 	    	$rank = $j + 1;
 	    	$id = $id_matches[1][$j];
 	    	$img = $ps_img_match[1][$j];
 	    	$name = $ps_match[1][$j];
 	    	$name = preg_replace("/\'/","", $name); //작은따옴표 제거
-	    	
+	    	/*
 	    	  $ps_link = "https://play.google.com/store/apps/details?id=".$id."&hl=en&gl=".$contury."";
 	    	  $ps_ch_link = curl_init($ps_link);
 	          curl_setopt($ps_ch_link, CURLOPT_RETURNTRANSFER, 1);
@@ -46,19 +46,18 @@ ini_set('max_execution_time', 0);
 	          preg_match('/<span itemprop="genre".*?>(.*?)<\/span>/', $ps_content_link, $ps_genre_match);//장르(카테고리)
 	          $ps_genre = $ps_genre_match[1];
 	          echo $ps_genre;
-
+			*/
 	    	// 앱 정보 저장
 	    	$sql = "SELECT * FROM app_info WHERE name='$name'";
     		$result = mysqli_query($connect, $sql);
     		$num =mysqli_num_rows($result);
-			$ps_genre = preg_replace("/&amp;/","&", $ps_genre);
 
     		if($num){ //똑같은 앱정보 이미 있음
-    			$sql = "UPDATE app_info SET ps_id='$id', ps_genre='$ps_genre' WHERE name='$name'";
+    			$sql = "UPDATE app_info SET ps_id='$id' WHERE name='$name'";
     			$res = mysqli_query($connect, $sql);
     		}
     		else{
-    			$result= mysqli_query($connect, "INSERT INTO app_info (ps_id, img, name, isFree, ps_genre) VALUES('$id', '$img', '$name', '$is_free', '$ps_genre')");
+    			$result= mysqli_query($connect, "INSERT INTO app_info (ps_id, img, name, isFree) VALUES('$id', '$img', '$name', '$is_free')");
     		}
 
     		$id_ps = "id_ps_".$free_paid;
@@ -72,6 +71,33 @@ ini_set('max_execution_time', 0);
 		}
 	    	mysqli_close($connect);
 	    	//it_DB($free_paid, $country, $is_free);
+	}
+
+
+	function ps_genre(){
+		include('db_con.php');
+
+		$sql = "SELECT ps_id FROM app_info WHERE ps_genre IS NULL AND ps_id IS NOT NULL";
+		$result = mysqli_query($connect, $sql);
+		$num= mysqli_num_rows($result);
+		echo $num;
+		for($i=0;$i<$num;$i++){
+			$id=mysqli_fetch_row($result);
+			$ps_link = "https://play.google.com/store/apps/details?id=".$id[0]."&hl=en&gl=us";
+			$ps_ch_link = curl_init($ps_link);
+			curl_setopt($ps_ch_link, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ps_ch_link, CURLOPT_RANGE, '0-100');
+			curl_setopt($ps_ch_link, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt($ps_ch_link, CURLOPT_SSL_VERIFYPEER, 0);
+			$ps_content_link = curl_exec($ps_ch_link);
+			curl_close($ps_ch_link);
+			preg_match('/<span itemprop="genre".*?>(.*?)<\/span>/', $ps_content_link, $ps_genre_match);//장르(카테고리)
+			$ps_genre = $ps_genre_match[1];
+			$ps_genre = preg_replace("/&amp;/","&", $ps_genre);
+			echo $ps_genre;
+			mysqli_query($connect, "UPDATE app_info SET ps_genre='$ps_genre' WHERE ps_id='$id[0]'");
+		}
+		mysqli_close($connect);
 	}
 
 
@@ -157,7 +183,7 @@ ini_set('max_execution_time', 0);
     			$res = mysqli_query($connect, $sql);
     		}
     		else{
-    			$result= mysqli_query($connect, "INSERT INTO app_info (it_id, img, name, isFree, it_genre) VALUES('$id', '$img', '$name', '$is_free', '$it_genre_match');");
+    			$result= mysqli_query($connect, "INSERT INTO app_info (it_id, img, name, isFree, it_genre) VALUES('$id', '$img', '$name', '$is_free', '$genre');");
     		}
     		$id_it = "id_it_".$free_paid;
 			//아이튠즈 무료 앱 정보, 순위 DB 저장		    			
@@ -196,9 +222,9 @@ ini_set('max_execution_time', 0);
 		    		break;
 		    }
 
-		    ps_DB($free_paid, $country, $is_free);
-			//it_DB($free_paid, $country, $is_free);
+		ps_DB($free_paid, $country, $is_free);
+		it_DB($free_paid, $country, $is_free);
 		}
 	}
-
+	ps_genre();
 ?>
