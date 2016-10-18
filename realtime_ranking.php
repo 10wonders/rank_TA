@@ -156,6 +156,13 @@
             if($before_rank1!=true){
                 $changerank1 ="new";
                 $changeval1=null;
+                if($ranking1<90){
+                  $up=101 - $ranking1;
+                  $coming_rank[$k][0]=$up;
+                  $coming_rank[$k][1]=$sel_obj1->name;
+                  $coming_rank[$k][2]=$sel_obj1->img;
+                  $k++;
+                }
             }
             elseif($ranking1>$before_rank1){
                 $down = $before_rank1-$ranking1;
@@ -182,6 +189,13 @@
             if($before_rank2!=true){
                 $changerank2 ="new";
                 $changeval2=null;
+                if($ranking2<90){
+                  $up=101 - $ranking2;
+                  $coming_rank[$k][0]=$up;
+                  $coming_rank[$k][1]=$sel_obj2->name;
+                  $coming_rank[$k][2]=$sel_obj2->img;
+                  $k++;
+                }
             }
             elseif($ranking2>$before_rank2){
                 $down = $before_rank2-$ranking2;
@@ -195,8 +209,8 @@
                 if($up>9){
                   //$coming_obj[$k]=$sel_obj2;
                   $coming_rank[$k][0]=$up;
-                  $coming_rank[$k][1]=$sel_obj1->name;
-                  $coming_rank[$k][2]=$sel_obj1->img;
+                  $coming_rank[$k][1]=$sel_obj2->name;
+                  $coming_rank[$k][2]=$sel_obj2->img;
                   $k++;
                 }
             }
