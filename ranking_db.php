@@ -34,6 +34,7 @@ ini_set('max_execution_time', 0);
 	    	$img = $ps_img_match[1][$j];
 	    	$name = $ps_match[1][$j];
 	    	$name = preg_replace("/\'/","", $name); //작은따옴표 제거
+			$name = preg_replace("/&amp;/","&", $name); // &amp; >> & (특수문자 제거)
 	    	/*
 	    	  $ps_link = "https://play.google.com/store/apps/details?id=".$id."&hl=en&gl=".$contury."";
 	    	  $ps_ch_link = curl_init($ps_link);
@@ -252,10 +253,10 @@ ini_set('max_execution_time', 0);
 		    		break;
 		    }
 
-		//ps_DB($free_paid, $country, $is_free);
+		ps_DB($free_paid, $country, $is_free);
 		//it_DB($free_paid, $country, $is_free);
 		}
 	}
 //	ps_genre();
-	it_genre();
+//	it_genre();
 ?>
