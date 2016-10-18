@@ -44,7 +44,7 @@
             </form>
             </div>");
          $date = date('Y-m-d');
-        $beforeDay = date("Y-m-d", strtotime($day." -1 day"));   
+        $beforeDay = date("Y-m-d", strtotime($day." -7 day"));   
          
 
         // including the session file
@@ -56,7 +56,7 @@
         } 
 
         $genre = $_SESSION['genre'];
-
+        echo $genre.'<br />';
         if($genre==NULL or $genre=="All"){
           $genre="All";
           $result = mysqli_query($connect, "SELECT rank, $id_free, $id_paid FROM $country WHERE day='$date'");
@@ -87,7 +87,6 @@
                     <td class=\"thead-line\">App Paid</td>
                 </thead>
         ");
-        echo $genre;
         for($i = 0; $i<$num; $i++){
             if($provider == "google"){
               if($genre=="All"){
@@ -167,6 +166,13 @@
                 $up = $before_rank1-$ranking1;
                 $changerank1 = "up";
                 $changeval1 = $up;
+                if($up>9){
+                  //$coming_obj[$k]=$sel_obj1;
+                  $coming_rank[$k][0]=$up;
+                  $coming_rank[$k][1]=$sel_obj1->name;
+                  $coming_rank[$k][2]=$sel_obj1->img;
+                  $k++;
+                }
             }
             elseif($ranking1==$before_rank1){
                 $changerank1 = "same";
@@ -186,11 +192,20 @@
                 $up = $before_rank2-$ranking2;
                 $changerank2 = "up";
                 $changeval2 = $up;
+                if($up>9){
+                  //$coming_obj[$k]=$sel_obj2;
+                  $coming_rank[$k][0]=$up;
+                  $coming_rank[$k][1]=$sel_obj1->name;
+                  $coming_rank[$k][2]=$sel_obj1->img;
+                  $k++;
+                }
             }
             elseif($ranking2==$before_rank2){
                 $changerank2 = "same";
                 $changeval2 = null;
             }
+
+
     
             printf("<tr><td>%s</td>", $i+1);
             printf("<td><img src=\"%s\" width=\"50\"></td>
@@ -225,17 +240,40 @@
                 </div>
               </td>", $sel_obj_img2, $sel_obj_name2, $paid, $download_paid,$download_paid,$download_paid, $chart_paid, $chart_paid, $chart_paid, $changerank2, $changeval2);           
         }
+        if($coming_rank){
+          printf("<div class='trend'>
+                  <table border=\"0\">
+                  <thead>
+                      <td class=\"thead-line\">No</td>
+                      <td class=\"thead-line\"></td>
+                      <td class=\"thead-line\">Hot trend</td>
+                  </thead>"
+            );
+          rsort($coming_rank);
+          for($n=0; $n<count($coming_rank); $n++){
+             $img = $coming_rank[$n][2];
+             $name = $coming_rank[$n][1];
+             $rank = $coming_rank[$n][0];
+             printf("<tr><td>%s</td>", $n+1);
+             printf("<td><img src=\"%s\" width=\"50\"></td>
+                     <td><div class=\"app_name\">%s</div>
+                     <span class = 'up'>
+                          <img class = 'up' src='up.png'>%s
+                      </span></td></tr>",$img, $name, $rank);
+          }
+          printf("</table></div>");
+        }
   }
-$i = $_POST['Country']; 
 
+
+$i = $_POST['Country']; 
 $j = $_POST['provider'];
-//$k = $_POST['genre'];
+$k = 0;
+$coming_obj[10];
 if($i==NULL){
   $i = "ko";
   $j = "google";
 }
-//if(!$k){
-//  $_SESSION['genre']='all';
-//}
 loadRanking($i, $j);
+  
 ?>
