@@ -56,7 +56,7 @@
         } 
 
         $genre = $_SESSION['genre'];
-
+        echo $genre.'<br />';
         if($genre==NULL or $genre=="All"){
           $genre="All";
           $result = mysqli_query($connect, "SELECT rank, $id_free, $id_paid FROM $country WHERE day='$date'");
@@ -87,7 +87,6 @@
                     <td class=\"thead-line\">App Paid</td>
                 </thead>
         ");
-        echo $genre;
         for($i = 0; $i<$num; $i++){
             if($provider == "google"){
               if($genre=="All"){
@@ -242,7 +241,8 @@
               </td>", $sel_obj_img2, $sel_obj_name2, $paid, $download_paid,$download_paid,$download_paid, $chart_paid, $chart_paid, $chart_paid, $changerank2, $changeval2);           
         }
         if($coming_rank){
-          printf("<table border=\"0\">
+          printf("<div class='trend'>
+                  <table border=\"0\">
                   <thead>
                       <td class=\"thead-line\">No</td>
                       <td class=\"thead-line\"></td>
@@ -258,9 +258,10 @@
              printf("<td><img src=\"%s\" width=\"50\"></td>
                      <td><div class=\"app_name\">%s</div>
                      <span class = 'up'>
-                          <img class = '$changerank1' src='up.png'>%s
+                          <img class = 'up' src='up.png'>%s
                       </span></td></tr>",$img, $name, $rank);
           }
+          printf("</table></div>");
         }
   }
 

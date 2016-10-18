@@ -15,7 +15,7 @@
     margin :40px auto;
     text-align: center;;
   }
-   table{margin :40px auto;}
+   table{margin :20px auto; float:right;}
    #table_header{ 
     border-top: 3px solid #555555;
     border-bottom: 2px solid #aaaaaa;
@@ -35,6 +35,9 @@
     border-top :3px solid #666666;
     border-bottom: 2px solid #aaaaaa;
     padding: 20px 0;
+  }
+  .trend{
+    float: left;
   }
   .cls_app_name{
     width: 350px;
@@ -165,11 +168,14 @@ window.onload = function(){
 }
 
 </script>
-
+<?php
+// Start the session
+session_start();
+?>
 </head>
 <body>
 
-<h1> PLAY-STORE && ITUNES 실시간 차트</h1>
+<h1> PLAY-STORE / ITUNES 차트</h1>
 </div>
 
     <div id="chart">
