@@ -219,8 +219,7 @@ ini_set('max_execution_time', 0);
 			curl_close($it_ch);
 			preg_match('/<span itemprop="applicationCategory".*?>(.*?)<\/span>/', $it_link_content, $it_genre_match);
 			$it_genre = $it_genre_match[1];
-			$it_genre = preg_replace("/&#38;/","&", $it_genre);
-			$it_genre = preg_replace("/&amp;","&", $it_genre);
+			$it_genre = preg_replace("/&amp;/","&", $it_genre);
 			mysqli_query($connect, "UPDATE app_info SET it_genre='$it_genre' WHERE it_link='$it_link'");
 		}
     	mysqli_close($connect);
@@ -257,6 +256,6 @@ ini_set('max_execution_time', 0);
 		//it_DB($free_paid, $country, $is_free);
 		}
 	}
-	ps_genre();
+//	ps_genre();
 	it_genre();
 ?>
