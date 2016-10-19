@@ -62,6 +62,7 @@
   .app_download{
     margin-left: 10px;
   }
+
   img.up{
     float : right;
     width : 15px;
@@ -97,6 +98,10 @@
   .new{
     float : right; 
     color : blue;
+  }
+  .genre{
+    font-size: 9px;
+    color: gray;
   }
   #ranking{ 
     margin:0 auto;  
@@ -147,19 +152,28 @@ function func(country){
 }
 function app_img_on(id, which){
 
-  if(which){
-    var obj = document.getElementById(id).setAttribute("src", "on-google-play.png");
+  if(which==1){
+    var obj = document.getElementById(id).setAttribute("src", "icons/on-google-play.png");
   }
-  else
-    document.getElementById(id).setAttribute("src", "on-chart.png");
+  else if(which==0){
+    document.getElementById(id).setAttribute("src", "icons/on-chart.png");
+  }
+  else if(which==2){
+    document.getElementById(id).setAttribute("src", "icons/on-app-store.png");
+  }
 
 }
 function app_img_off(id, which){
 
-  if(which)
-    document.getElementById(id).setAttribute("src", "off-google-play.png");
-  else
-    document.getElementById(id).setAttribute("src", "off-chart.png");
+  if(which==1){
+    document.getElementById(id).setAttribute("src", "icons/off-google-play.png");
+  }
+  else if(which==0){
+    document.getElementById(id).setAttribute("src", "icons/off-chart.png");
+  }
+  else if(which==2){
+    document.getElementById(id).setAttribute("src", "icons/off-app-store.png");
+  }
 
 }
 
