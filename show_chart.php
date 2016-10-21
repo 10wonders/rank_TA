@@ -51,10 +51,21 @@
 	}
 	global $day, $it_data, $ps_data;
 ?>
-	<div style="position:absolute; top:60px; left:10px; width:500px; height:300px;">
-		<canvas id="myChart"></canvas>
+	<div>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="chartModalLabel">순위 변동 차트</h4>
+		</div>
+		<div class="modal-body">
+			<canvas id="myChart"></canvas>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+		</div>
+
 		<script src="Chart.js"></script>
 	</div>
+
 	<script>
 		//function showChart(value){
 

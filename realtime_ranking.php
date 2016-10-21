@@ -2,8 +2,11 @@
 
 <?php
 
- function loadRanking($country, $provider){
+ date_default_timezone_set('Asia/Seoul');
+
+function loadRanking($country, $provider){
 	 include ('db_con.php');
+
 
 	 //google
     if($provider == "google"){
@@ -156,9 +159,11 @@
               $sel_obj_link2 = $sel_obj_link2[1];
             }
 
-            $download_free = 'df'.$i;
+            $download_free_ps = 'df'.$i.'_ps';
+			$download_free_it = 'df'.$i.'_it';
             $chart_free = 'cf'.$i;
-            $download_paid = 'dp'.$i;
+            $download_paid_ps = 'dp'.$i.'_ps';
+			$download_paid_it = 'dp'.$i.'_it';
             $chart_paid = 'cp'.$i;
 
             $sel_rank1 = mysqli_fetch_row($selbefore1);
@@ -266,25 +271,25 @@
                 $it_link = $it_link[1];
                 if($it_id!=NULL){
                      printf("<a href=\"https://itunes.apple.com/app%s\" target='_blank'><img onmouseover=\"app_img_on('%s', 2)\" onmouseout=\"app_img_off('%s', 2)\" id=\"%s\" class=\"app_download\" src=\"icons/off-app-store.png\" width=\"20\" height=\"20\"></a>",
-                   $it_link, $download_free, $download_free, $download_free);
+                   $it_link, $download_free_it, $download_free_it, $download_free_it);
                 }
                 printf("<a href=\"https://play.google.com/store/apps/details?id=%s\" target='_blank'><img onmouseover=\"app_img_on('%s', 1)\" onmouseout=\"app_img_off('%s', 1)\" id=\"%s\" class=\"app_download\" src=\"icons/off-google-play.png\" width=\"20\" height=\"20\"></a>",
-                 $free, $download_free, $download_free, $download_free);
+                 $free, $download_free_ps, $download_free_ps, $download_free_ps);
             }
 
             else{
                 printf("<a href=\"https://itunes.apple.com/app%s\" target='_blank'><img onmouseover=\"app_img_on('%s', 2)\" onmouseout=\"app_img_off('%s', 2)\" id=\"%s\" class=\"app_download\" src=\"icons/off-app-store.png\" width=\"20\" height=\"20\"></a>",
-                 $sel_obj_link1, $download_free, $download_free, $download_free);
+                 $sel_obj_link1, $download_free_it, $download_free_it, $download_free_it);
                 $ps_query = mysqli_query($connect, "SELECT ps_id From app_info WHERE it_id='$free'");
                 $ps_fetch = mysqli_fetch_object($ps_query);
                 $ps_id = $ps_fetch->ps_id;
                 if($ps_id!=NULL){
                       printf("<a href=\"https://play.google.com/store/apps/details?id=%s\" target='_blank'><img onmouseover=\"app_img_on('%s', 1)\" onmouseout=\"app_img_off('%s', 1)\" id=\"%s\" class=\"app_download\" src=\"icons/off-google-play.png\" width=\"20\" height=\"20\"></a>",
-                 $ps_id, $download_free, $download_free, $download_free);
+                 $ps_id, $download_free_ps, $download_free_ps, $download_free_ps);
                 }
             }
 
-            printf("<a href = \"show_chart.php?country=$country&sec=free&id=$free&from=$provider\" target='_blank'><img onmouseover=\"app_img_on('%s', 0)\" onmouseout=\"app_img_off('%s', 0)\" id=\"%s\" class=\"app_download\" src=\"icons/off-chart.png\" width=\"20\" height=\"20\"></a>
+            printf("<a data-toggle=\"modal\" href=\"show_chart.php?country=$country&sec=free&id=$free&from=$provider\" data-target=\"#chartModal\"><img onmouseover=\"app_img_on('%s', 0)\" onmouseout=\"app_img_off('%s', 0)\" id=\"%s\" class=\"app_download\" src=\"icons/off-chart.png\" width=\"20\" height=\"20\"></a>
                     <span class = '$changerank1'>
                         <img class = '$changerank1' src='icons/%s.png'>%s
                     </span>
